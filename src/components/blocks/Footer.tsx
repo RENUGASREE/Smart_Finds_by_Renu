@@ -36,7 +36,7 @@ export default async function Footer() {
                 <Link href="/categories" className="hover:text-primary transition-colors">All Categories</Link>
               </li>
               <li>
-                <Link href="/categories/handmade" className="hover:text-primary transition-colors">Handmade Collection</Link>
+                <Link href="/handmade" className="hover:text-primary transition-colors">Handmade Collection</Link>
               </li>
               <li>
                 <Link href="/about" className="hover:text-primary transition-colors">About Renu</Link>

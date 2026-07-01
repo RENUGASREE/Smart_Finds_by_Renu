@@ -23,11 +23,9 @@ export default async function AboutPage() {
     <div className="container mx-auto px-4 py-12 md:py-20 pb-24">
       <div className="max-w-4xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-24">
-          <div className="relative aspect-square rounded-[2rem] overflow-hidden shadow-2xl">
-            <div className="flex items-center justify-center w-full h-full border border-dashed rounded-xl text-sm text-gray-500">
-              Your photo can be added here later.
+            <div className="relative aspect-square rounded-[2rem] overflow-hidden shadow-2xl">
+              <Image src="/About.png" alt="About Renu" fill className="object-cover" priority />
             </div>
-          </div>
           <div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">Hi, I'm Renu.</h1>
             <div className="prose prose-zinc dark:prose-invert text-lg text-muted-foreground">

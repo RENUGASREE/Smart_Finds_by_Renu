@@ -50,7 +50,7 @@ export default async function Home() {
             <Link href="/categories" className={buttonVariants({ size: "lg", className: "rounded-full px-8 bg-[var(--accent)] text-white hover:bg-[var(--accent)]/90 transition-transform transform hover:scale-105" })}>
               <ShoppingBag className="mr-2 h-5 w-5" /> Start Browsing
             </Link>
-            <Link href="/categories/handmade" className={buttonVariants({ size: "lg", variant: "outline", className: "rounded-full px-8 border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)]/10" })}>
+            <Link href="/handmade" className={buttonVariants({ size: "lg", variant: "outline", className: "rounded-full px-8 border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)]/10" })}>
               <Heart className="mr-2 h-5 w-5 text-red-500" /> Handmade Collection
             </Link>
           </div>
@@ -170,7 +170,7 @@ export default async function Home() {
             </h2>
             <p className="text-muted-foreground">Unique resin art and jewelry pieces crafted with love.</p>
           </div>
-          <Link href="/categories/handmade" className="hidden sm:flex items-center text-sm font-medium text-primary hover:underline">
+          <Link href="/handmade" className="hidden sm:flex items-center text-sm font-medium text-primary hover:underline">
             View All <ArrowRight className="ml-1 h-4 w-4" />
           </Link>
         </div>
