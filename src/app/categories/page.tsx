@@ -20,15 +20,14 @@ export default async function CategoriesPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {(categories || []).map((category) => (
-          <Link key={category.id} href={`/categories/${category.slug}`} className="group relative aspect-square overflow-hidden rounded-2xl bg-muted transition-transform hover:-translate-y-1 duration-300">
+          <Link key={category.id} href={`/categories/${category.slug}`} className="group relative aspect-square overflow-hidden rounded-2xl bg-muted border border-transparent hover:border-[var(--accent)] hover:shadow-xl transition-all duration-300">
             {category.image_url && (
               <Image
                 src={category.image_url}
                 alt={category.name}
                 fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
             )}

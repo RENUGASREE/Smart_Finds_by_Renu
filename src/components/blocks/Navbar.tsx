@@ -5,21 +5,23 @@ import { Search, Menu, ShoppingBag } from "lucide-react";
 export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto flex h-16 items-center justify-between px-6 sm:px-8 lg:px-10">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/Smart_Finds_by_Renu.png" alt="Smart Finds by Renu" width={32} height={32} className="h-6 w-6 object-contain" />
+            <div className="h-10 w-10 rounded-full overflow-hidden border border-muted">
+              <Image src="/Smart_Finds_by_Renu.png" alt="Smart Finds by Renu" width={40} height={40} priority />
+            </div>
             <span className="text-xl font-bold tracking-tight">Smart Finds by Renu</span>
           </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-            <Link href="/" className="transition-colors hover:text-primary">
-              Home
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+                <Link href="/" className="transition-colors hover:text-primary underline underline-offset-4 decoration-[var(--accent)] hover:decoration-[var(--accent)]">
+                  Home
+                </Link>
+                <Link href="/categories" className="transition-colors hover:text-primary underline underline-offset-4 decoration-[var(--accent)] hover:decoration-[var(--accent)] text-muted-foreground">
+                  Categories
             </Link>
-            <Link href="/categories" className="transition-colors hover:text-primary text-muted-foreground">
-              Categories
-            </Link>
-            <Link href="/about" className="transition-colors hover:text-primary text-muted-foreground">
-              About
+            <Link href="/about" className="transition-colors hover:text-primary underline underline-offset-4 decoration-[var(--accent)] hover:decoration-[var(--accent)] text-muted-foreground">
+                  About
             </Link>
           </nav>
         </div>

@@ -32,23 +32,26 @@ export default async function Home() {
   return (
     <div className="flex flex-col pb-20">
       {/* 1. Hero Section */}
-      <section className="relative overflow-hidden bg-muted/30 pt-20 pb-24 md:pt-28 md:pb-32">
-        <div className="container mx-auto px-4 text-center">
-          <Badge className="mb-6 px-3 py-1 bg-primary/10 text-primary hover:bg-primary/20 transition-colors border-none">
-            <Sparkles className="w-3 h-3 mr-1 inline" /> Premium Affiliate Showcase
+      <section className="relative overflow-hidden bg-gradient-to-r from-gray-50 via-gray-100 to-gray-50 pt-24 pb-32 md:pt-28 md:pb-36">
+        <div className="container mx-auto px-6 text-center">
+          <Badge className="mb-8 px-4 py-1 bg-[var(--accent)]/10 text-[var(--accent)] hover:bg-[var(--accent)]/20 transition-colors border-none rounded-full">
+            <Sparkles className="w-4 h-4 mr-1 inline" /> Premium Affiliate Showcase
           </Badge>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground mb-6 max-w-4xl mx-auto">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground mb-8 max-w-4xl mx-auto">
             Smart Finds by Renu
           </h1>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground mb-10 leading-relaxed">
-            Curated Amazon & Flipkart finds, handmade jewelry, resin art, and daily smart recommendations.
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground mb-6 leading-relaxed">
+            Curated Amazon &amp; Flipkart finds, handmade jewelry, resin art, and daily smart recommendations.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href="/categories" className={buttonVariants({ size: "lg", className: "rounded-full px-8" })}>
-              <ShoppingBag className="mr-2 h-4 w-4" /> Start Browsing
+          <p className="text-sm text-gray-600 mb-8 tracking-wider uppercase">
+            Amazon Finds · Flipkart Finds · Handmade Jewelry · Resin Art · Curated Recommendations
+          </p>
+          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
+            <Link href="/categories" className={buttonVariants({ size: "lg", className: "rounded-full px-8 bg-[var(--accent)] text-white hover:bg-[var(--accent)]/90 transition-transform transform hover:scale-105" })}>
+              <ShoppingBag className="mr-2 h-5 w-5" /> Start Browsing
             </Link>
-            <Link href="/categories/handmade" className={buttonVariants({ size: "lg", variant: "outline", className: "rounded-full px-8 bg-transparent" })}>
-              <Heart className="mr-2 h-4 w-4 text-red-500" /> Handmade Collection
+            <Link href="/categories/handmade" className={buttonVariants({ size: "lg", variant: "outline", className: "rounded-full px-8 border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)]/10" })}>
+              <Heart className="mr-2 h-5 w-5 text-red-500" /> Handmade Collection
             </Link>
           </div>
         </div>
@@ -64,6 +67,7 @@ export default async function Home() {
                   src={featuredProduct.image_url}
                   alt={featuredProduct.title}
                   fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                   priority
                 />
