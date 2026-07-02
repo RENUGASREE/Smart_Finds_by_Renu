@@ -1,9 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink, Share2, ShoppingCart } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Product } from "@/types";
 
 interface ProductCardProps {
@@ -12,70 +10,58 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <Card className="group overflow-hidden rounded-2xl border bg-card transition-all hover:shadow-xl hover:-translate-y-1 duration-300">
-      <Link href={`/product/${product.slug}`} className="block relative aspect-square overflow-hidden bg-muted">
-        {/* Placeholder for actual image */}
-        <div className="absolute inset-0 flex items-center justify-center text-muted-foreground bg-secondary/50 group-hover:scale-105 transition-transform duration-500">
-          {product.image_url ? (
-            <Image
-              src={product.image_url}
-              alt={product.title}
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover"
-            />
-          ) : (
-            <span className="text-sm">Image: {product.title}</span>
+    <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-border/60 bg-card shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-card">
+      <Link
+        href={`/product/${product.slug}`}
+        className="relative block aspect-[4/5] overflow-hidden bg-muted"
+      >
+        {product.image_url ? (
+          <Image
+            src={product.image_url}
+            alt={product.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center text-sm text-muted-foreground">
+            No image
+          </div>
+        )}
+
+        <div className="absolute left-4 top-4 flex flex-col gap-2">
+          {product.category?.name && (
+            <Badge className="border-none bg-white/90 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-foreground shadow-sm backdrop-blur-sm">
+              {product.category.name}
+            </Badge>
           )}
-        </div>
-        
-        {/* Badges Overlay */}
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
           {product.badge && (
-            <Badge className="bg-primary/90 hover:bg-primary text-primary-foreground backdrop-blur-sm border-none shadow-sm">
+            <Badge className="border-none bg-[var(--accent)]/90 px-2.5 py-0.5 text-[10px] font-medium text-white shadow-sm backdrop-blur-sm">
               {product.badge}
             </Badge>
           )}
-          {product.handmade && (
-            <Badge variant="secondary" className="bg-background/90 hover:bg-background text-foreground backdrop-blur-sm shadow-sm">
-              Handmade
-            </Badge>
-          )}
-        </div>
-
-        {/* Platform Badge */}
-        <div className="absolute bottom-3 right-3">
-          <Badge variant="outline" className="bg-background/90 hover:bg-background backdrop-blur-sm shadow-sm border-none text-xs font-semibold">
-            {product.platform}
-          </Badge>
         </div>
       </Link>
 
-      <CardContent className="p-5">
-        <div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
-          <span>{product.category?.name || "Category"}</span>
-          {product.price && <span className="font-medium text-foreground">${product.price.toFixed(2)}</span>}
-        </div>
-        
-        <Link href={`/product/${product.slug}`} className="block group-hover:text-primary transition-colors">
-          <h3 className="font-bold text-lg leading-tight mb-2 line-clamp-1">{product.title}</h3>
+      <div className="flex flex-1 flex-col p-5 md:p-6">
+        <Link href={`/product/${product.slug}`} className="block">
+          <h3 className="font-heading mb-2 text-xl leading-snug transition-colors group-hover:text-[var(--accent)]">
+            {product.title}
+          </h3>
         </Link>
-        
-        <p className="text-sm text-muted-foreground line-clamp-2">
+
+        <p className="mb-6 line-clamp-2 flex-1 text-sm leading-relaxed text-muted-foreground">
           {product.short_description}
         </p>
-      </CardContent>
 
-      <CardFooter className="p-5 pt-0 flex gap-2">
-        <Link href={product.affiliate_link} target="_blank" rel="noopener noreferrer" className={`${buttonVariants({ variant: "default", size: "lg" })} flex-1 rounded-xl shadow-sm`}>
-          <ShoppingCart className="mr-2 h-4 w-4" />
-          Buy Now
+        <Link
+          href={`/product/${product.slug}`}
+          className="inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors hover:text-[var(--accent)]"
+        >
+          View Find
+          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </Link>
-        <Button variant="secondary" size="icon" className="rounded-xl shrink-0" title="Share">
-          <Share2 className="h-4 w-4 text-muted-foreground" />
-          <span className="sr-only">Share</span>
-        </Button>
-      </CardFooter>
-    </Card>
+      </div>
+    </article>
   );
 }

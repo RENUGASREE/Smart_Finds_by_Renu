@@ -2,45 +2,78 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Search, Menu, X, ShoppingBag } from "lucide-react";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { Search, Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+
+const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/categories", label: "Discover" },
+  { href: "/handmade", label: "Handmade" },
+  { href: "/about", label: "About" },
+];
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const closeMenu = () => setMenuOpen(false);
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
-      <div className="container mx-auto flex h-16 items-center justify-between px-6 sm:px-8 lg:px-10">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="h-10 w-10 rounded-full overflow-hidden border border-muted">
-              <Image src="/Smart_Finds_by_Renu.png" alt="Smart Finds by Renu" width={40} height={40} priority />
-            </div>
-            <span className="text-xl font-bold tracking-tight">Smart Finds by Renu</span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-            <Link href="/" className="transition-colors hover:text-primary underline underline-offset-4 decoration-[var(--accent)] hover:decoration-[var(--accent)]">
-              Home
+    <header className="glass-nav sticky top-0 z-50 w-full">
+      <div className="mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between px-5 sm:px-8">
+        <Link href="/" className="flex items-center gap-3">
+          <div className="relative h-10 w-10 overflow-hidden rounded-full border border-border/80 bg-white shadow-soft">
+            <Image
+              src="/Smart_Finds_by_Renu.png"
+              alt="Smart Finds by Renu"
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+          <span className="hidden font-heading text-lg sm:inline">Smart Finds by Renu</span>
+        </Link>
+
+        <nav className="hidden items-center gap-8 md:flex">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={cn(
+                "text-sm transition-colors hover:text-[var(--accent)]",
+                pathname === link.href
+                  ? "font-medium text-foreground"
+                  : "text-muted-foreground"
+              )}
+            >
+              {link.label}
             </Link>
-            <Link href="/categories" className="transition-colors hover:text-primary underline underline-offset-4 decoration-[var(--accent)] hover:decoration-[var(--accent)] text-muted-foreground">
-              Categories
-            </Link>
-            <Link href="/about" className="transition-colors hover:text-primary underline underline-offset-4 decoration-[var(--accent)] hover:decoration-[var(--accent)] text-muted-foreground">
-              About
-            </Link>
-          </nav>
-        </div>
-        <div className="flex items-center gap-4">
-          <Link href="/search" className="p-2 text-muted-foreground hover:text-primary transition-colors">
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-1">
+          <Link
+            href="/search"
+            className="rounded-full p-2.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            aria-label="Search finds"
+          >
             <Search className="h-5 w-5" />
-            <span className="sr-only">Search</span>
           </Link>
-          {/* Mobile menu button */}
+
           <button
             onClick={() => setMenuOpen(true)}
-            className="md:hidden p-2 text-muted-foreground hover:text-primary transition-colors"
+            className="rounded-full p-2.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground md:hidden"
             aria-label="Open menu"
           >
             <Menu className="h-5 w-5" />
@@ -48,35 +81,57 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu overlay */}
-      {menuOpen && (
-        <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex flex-col items-center justify-center">
+      <div
+        className={cn(
+          "fixed inset-0 z-50 bg-black/40 backdrop-blur-sm transition-opacity duration-300 md:hidden",
+          menuOpen ? "opacity-100" : "pointer-events-none opacity-0"
+        )}
+        onClick={() => setMenuOpen(false)}
+        aria-hidden={!menuOpen}
+      />
+
+      <div
+        className={cn(
+          "fixed inset-y-0 right-0 z-50 w-[min(88vw,20rem)] border-l border-border/60 bg-background p-6 shadow-card transition-transform duration-300 ease-out md:hidden",
+          menuOpen ? "translate-x-0" : "translate-x-full"
+        )}
+      >
+        <div className="mb-8 flex items-center justify-between">
+          <span className="font-heading text-lg">Menu</span>
           <button
-            onClick={closeMenu}
-            className="absolute top-4 right-4 p-2 text-white"
+            onClick={() => setMenuOpen(false)}
+            className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             aria-label="Close menu"
           >
-            <X className="h-6 w-6" />
+            <X className="h-5 w-5" />
           </button>
-          <nav className="flex flex-col gap-6 text-xl text-white">
-            <Link href="/" onClick={closeMenu} className="hover:text-[var(--accent)] transition-colors">
-              Home
-            </Link>
-            <Link href="/categories" onClick={closeMenu} className="hover:text-[var(--accent)] transition-colors">
-              Categories
-            </Link>
-            <Link href="/search" onClick={closeMenu} className="hover:text-[var(--accent)] transition-colors">
-              Search
-            </Link>
-            <Link href="/handmade" onClick={closeMenu} className="hover:text-[var(--accent)] transition-colors">
-              Handmade
-            </Link>
-            <Link href="/about" onClick={closeMenu} className="hover:text-[var(--accent)] transition-colors">
-              About
-            </Link>
-          </nav>
         </div>
-      )}
+
+        <nav className="flex flex-col gap-2">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setMenuOpen(false)}
+              className={cn(
+                "rounded-2xl px-4 py-3 text-base transition-colors",
+                pathname === link.href
+                  ? "bg-secondary font-medium text-foreground"
+                  : "text-muted-foreground hover:bg-secondary/70 hover:text-foreground"
+              )}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <Link
+            href="/search"
+            onClick={() => setMenuOpen(false)}
+            className="rounded-2xl px-4 py-3 text-base text-muted-foreground transition-colors hover:bg-secondary/70 hover:text-foreground"
+          >
+            Search Finds
+          </Link>
+        </nav>
+      </div>
     </header>
   );
 }

@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
-import { Plus, CheckCircle2 } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DeleteButton } from "@/components/admin/DeleteButton";
 import { deleteProduct } from "../actions";
@@ -9,25 +9,33 @@ import { buttonVariants } from "@/components/ui/button";
 
 export default async function ProductsPage() {
   const supabase = await createClient();
-  const { data: products } = await supabase.from("products").select("*, category:categories(name)").order("created_at", { ascending: false });
+  const { data: products } = await supabase
+    .from("products")
+    .select("*, category:categories(name)")
+    .order("created_at", { ascending: false });
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Products</h1>
+      <div className="mb-8 flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-semibold">Finds</h1>
+          <p className="text-sm text-muted-foreground">
+            Manage your curated recommendations.
+          </p>
+        </div>
         <Link href="/admin/products/new" className={buttonVariants({ variant: "default" })}>
-          <Plus className="w-4 h-4 mr-2" /> Add Product
+          <Plus className="mr-2 h-4 w-4" /> Add Find
         </Link>
       </div>
 
-      <div className="rounded-xl border bg-card overflow-hidden">
+      <div className="overflow-hidden rounded-xl border bg-card">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Title</TableHead>
+              <TableHead>Name</TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Platform</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>Labels</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -36,13 +44,16 @@ export default async function ProductsPage() {
               <TableRow key={product.id}>
                 <TableCell className="font-medium">
                   {product.title}
-                  {product.featured && <Badge variant="default" className="ml-2 text-[10px]">Today's Pick</Badge>}
+                  {product.featured && (
+                    <Badge variant="default" className="ml-2 text-[10px]">
+                      Featured
+                    </Badge>
+                  )}
                 </TableCell>
                 <TableCell>{product.category?.name}</TableCell>
                 <TableCell>{product.platform}</TableCell>
                 <TableCell>
-                  <div className="flex gap-1 flex-wrap">
-                    {product.badge && <Badge variant="outline">{product.badge}</Badge>}
+                  <div className="flex flex-wrap gap-1">
                     {product.handmade && <Badge variant="secondary">Handmade</Badge>}
                   </div>
                 </TableCell>
@@ -53,8 +64,8 @@ export default async function ProductsPage() {
             ))}
             {(!products || products.length === 0) && (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                  No products found.
+                <TableCell colSpan={5} className="py-8 text-center text-muted-foreground">
+                  No finds yet. Add your first recommendation.
                 </TableCell>
               </TableRow>
             )}

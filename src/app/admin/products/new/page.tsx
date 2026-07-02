@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { addProduct } from "../../actions";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -14,127 +13,114 @@ export default async function NewProductPage() {
   const { data: categories } = await supabase.from("categories").select("*").order("name");
 
   return (
-    <div className="max-w-3xl mx-auto pb-20">
-      <div className="flex items-center gap-4 mb-8">
+    <div className="mx-auto max-w-2xl pb-10">
+      <div className="mb-8 flex items-center gap-4">
         <Link href="/admin/products" className={buttonVariants({ variant: "outline", size: "icon" })}>
           <ArrowLeft className="h-4 w-4" />
         </Link>
-        <h1 className="text-3xl font-bold">Add Product</h1>
+        <div>
+          <h1 className="text-2xl font-semibold">Add a Find</h1>
+          <p className="text-sm text-muted-foreground">
+            Like creating a recommendation post — simple and personal.
+          </p>
+        </div>
       </div>
 
-      <form action={addProduct} className="space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <Label htmlFor="title">Title</Label>
-            <Input id="title" name="title" required />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="slug">Slug (URL friendly)</Label>
-            <Input id="slug" name="slug" required />
-          </div>
+      <form action={addProduct} className="space-y-6 rounded-[1.5rem] border border-border/60 bg-secondary/20 p-6 md:p-8">
+        <div className="space-y-2">
+          <Label htmlFor="title">Find Name</Label>
+          <Input id="title" name="title" required placeholder="e.g. My favourite vitamin C serum" />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="short_description">Short Description</Label>
-          <Textarea id="short_description" name="short_description" required rows={2} />
+          <Textarea
+            id="short_description"
+            name="short_description"
+            required
+            rows={3}
+            placeholder="A quick note about why this find is worth a look..."
+          />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="description">Full Description</Label>
-          <Textarea id="description" name="description" required rows={5} />
+          <Label htmlFor="why_i_recommend">Why I Recommend It</Label>
+          <Textarea
+            id="why_i_recommend"
+            name="why_i_recommend"
+            rows={4}
+            placeholder="Share your personal recommendation in your own words..."
+          />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="why_i_recommend">Why I Recommend This (Optional)</Label>
-          <Textarea id="why_i_recommend" name="why_i_recommend" rows={3} />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="image_file">Upload Image</Label>
-            <Input id="image_file" name="image_file" type="file" accept="image/*" />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="image_url">Or Image URL</Label>
-            <Input id="image_url" name="image_url" />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="affiliate_link">Affiliate Link</Label>
-            <Input id="affiliate_link" name="affiliate_link" required />
+            <Label htmlFor="category_id">Category</Label>
+            <select
+              id="category_id"
+              name="category_id"
+              required
+              className="flex h-10 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-[var(--accent)]/20"
+            >
+              <option value="">Select category</option>
+              {categories?.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="platform">Platform</Label>
-            <Select name="platform" defaultValue="Amazon">
-              <SelectTrigger>
-                <SelectValue placeholder="Select platform" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Amazon">Amazon</SelectItem>
-                <SelectItem value="Flipkart">Flipkart</SelectItem>
-                <SelectItem value="Other">Other</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="category_id">Category</Label>
-            <Select name="category_id" required>
-              <SelectTrigger>
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories?.map(c => (
-                  <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="price">Price (Optional)</Label>
-            <Input id="price" name="price" type="number" step="0.01" />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="badge">Badge (Optional)</Label>
-            <Select name="badge">
-              <SelectTrigger>
-                <SelectValue placeholder="None" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">None</SelectItem>
-                <SelectItem value="Trending">Trending</SelectItem>
-                <SelectItem value="New Arrival">New Arrival</SelectItem>
-                <SelectItem value="Editor's Pick">Editor's Pick</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="display_order">Display Order</Label>
-            <Input id="display_order" name="display_order" type="number" defaultValue="0" />
+            <select
+              id="platform"
+              name="platform"
+              defaultValue="Amazon"
+              className="flex h-10 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-[var(--accent)]/20"
+            >
+              <option value="Amazon">Amazon</option>
+              <option value="Flipkart">Flipkart</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 p-4 border rounded-xl bg-muted/20">
+        <div className="space-y-2">
+          <Label htmlFor="affiliate_link">Affiliate Link</Label>
+          <Input
+            id="affiliate_link"
+            name="affiliate_link"
+            required
+            placeholder="https://..."
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="image_file">Find Image</Label>
+          <Input id="image_file" name="image_file" type="file" accept="image/*" required />
+          <p className="text-xs text-muted-foreground">
+            Upload directly from your device. No image URLs needed.
+          </p>
+        </div>
+
+        <div className="space-y-4 rounded-xl border border-border/60 bg-background p-4">
           <div className="flex items-center space-x-2">
             <Checkbox id="featured" name="featured" value="true" />
-            <Label htmlFor="featured" className="font-semibold text-primary cursor-pointer">
-              Mark as Today's Featured Pick
+            <Label htmlFor="featured" className="cursor-pointer font-medium">
+              Featured find
             </Label>
           </div>
           <div className="flex items-center space-x-2">
             <Checkbox id="handmade" name="handmade" value="true" />
-            <Label htmlFor="handmade" className="cursor-pointer">Handmade Product</Label>
+            <Label htmlFor="handmade" className="cursor-pointer">
+              Handmade find
+            </Label>
           </div>
         </div>
 
-        <div className="pt-4 flex gap-4">
-          <Button type="submit">Save Product</Button>
+        <div className="flex gap-3 pt-2">
+          <Button type="submit">Publish Find</Button>
           <Link href="/admin/products" className={buttonVariants({ variant: "outline" })}>
             Cancel
           </Link>

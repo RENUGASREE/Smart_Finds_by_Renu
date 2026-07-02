@@ -1,22 +1,30 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { slugify } from '@/lib/slugify'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
+function inferPlatform(link: string): string {
+  const lower = link.toLowerCase()
+  if (lower.includes('amazon') || lower.includes('amzn')) return 'Amazon'
+  if (lower.includes('flipkart')) return 'Flipkart'
+  return 'Other'
+}
+
 export async function addCategory(formData: FormData) {
   const supabase = await createClient()
-  
+
   const name = formData.get('name') as string
-  const slug = formData.get('slug') as string
+  const slug = (formData.get('slug') as string) || slugify(name)
   const display_order = parseInt(formData.get('display_order') as string) || 0
 
-  let image_url = formData.get('image_url') as string
+  let image_url = ''
   const file = formData.get('image_file') as File
   if (file && file.size > 0) {
     const fileExt = file.name.split('.').pop()
-    const fileName = `${Math.random()}.${fileExt}`
-    const { error: uploadError, data } = await supabase.storage.from('images').upload(fileName, file)
+    const fileName = `${crypto.randomUUID()}.${fileExt}`
+    const { error: uploadError } = await supabase.storage.from('images').upload(fileName, file)
     if (uploadError) throw new Error(uploadError.message)
     const { data: { publicUrl } } = supabase.storage.from('images').getPublicUrl(fileName)
     image_url = publicUrl
@@ -26,11 +34,11 @@ export async function addCategory(formData: FormData) {
     name,
     slug,
     image_url,
-    display_order
+    display_order,
   })
 
   if (error) throw new Error(error.message)
-  
+
   revalidatePath('/admin/categories')
   revalidatePath('/')
   redirect('/admin/categories')
@@ -39,7 +47,7 @@ export async function addCategory(formData: FormData) {
 export async function deleteCategory(id: string) {
   const supabase = await createClient()
   const { error } = await supabase.from('categories').delete().eq('id', id)
-  
+
   if (error) throw new Error(error.message)
   revalidatePath('/admin/categories')
   revalidatePath('/')
@@ -47,44 +55,53 @@ export async function deleteCategory(id: string) {
 
 export async function addProduct(formData: FormData) {
   const supabase = await createClient()
-  
-  let image_url = formData.get('image_url') as string
+
+  const title = formData.get('title') as string
+  const slug = slugify(title)
+  const short_description = formData.get('short_description') as string
+  const why_i_recommend = (formData.get('why_i_recommend') as string) || null
+  const affiliate_link = formData.get('affiliate_link') as string
+  const category_id = formData.get('category_id') as string
+  const platform = (formData.get('platform') as string) || inferPlatform(affiliate_link)
+  const featured = formData.get('featured') === 'true' || formData.get('featured') === 'on'
+  const handmade = formData.get('handmade') === 'true' || formData.get('handmade') === 'on'
+
   const file = formData.get('image_file') as File
-  if (file && file.size > 0) {
-    const fileExt = file.name.split('.').pop()
-    const fileName = `${Math.random()}.${fileExt}`
-    const { error: uploadError, data } = await supabase.storage.from('images').upload(fileName, file)
-    if (uploadError) throw new Error(uploadError.message)
-    const { data: { publicUrl } } = supabase.storage.from('images').getPublicUrl(fileName)
-    image_url = publicUrl
+  if (!file || file.size === 0) {
+    throw new Error('Please upload a product image.')
   }
+
+  const fileExt = file.name.split('.').pop()
+  const fileName = `${crypto.randomUUID()}.${fileExt}`
+  const { error: uploadError } = await supabase.storage.from('images').upload(fileName, file)
+  if (uploadError) throw new Error(uploadError.message)
+  const { data: { publicUrl } } = supabase.storage.from('images').getPublicUrl(fileName)
 
   const data = {
-    title: formData.get('title') as string,
-    slug: formData.get('slug') as string,
-    short_description: formData.get('short_description') as string,
-    description: formData.get('description') as string,
-    image_url,
-    affiliate_link: formData.get('affiliate_link') as string,
-    platform: formData.get('platform') as string,
-    category_id: formData.get('category_id') as string,
-    price: formData.get('price') ? parseFloat(formData.get('price') as string) : null,
-    badge: (formData.get('badge') as string) || null,
-    featured: formData.get('featured') === 'true' || formData.get('featured') === 'on',
-    handmade: formData.get('handmade') === 'true' || formData.get('handmade') === 'on',
-    why_i_recommend: (formData.get('why_i_recommend') as string) || null,
-    display_order: parseInt(formData.get('display_order') as string) || 0,
+    title,
+    slug,
+    short_description,
+    description: why_i_recommend || short_description,
+    image_url: publicUrl,
+    affiliate_link,
+    platform,
+    category_id,
+    price: null,
+    badge: null,
+    featured,
+    handmade,
+    why_i_recommend,
+    display_order: 0,
   }
 
-  // If this product is marked as featured (Today's Pick), unmark all others
   if (data.featured) {
-    await supabase.from('products').update({ featured: false }).neq('id', '00000000-0000-0000-0000-000000000000') // hack to update all
+    await supabase.from('products').update({ featured: false }).neq('id', '00000000-0000-0000-0000-000000000000')
   }
 
   const { error } = await supabase.from('products').insert(data)
 
   if (error) throw new Error(error.message)
-  
+
   revalidatePath('/admin/products')
   revalidatePath('/')
   redirect('/admin/products')
@@ -93,7 +110,7 @@ export async function addProduct(formData: FormData) {
 export async function deleteProduct(id: string) {
   const supabase = await createClient()
   const { error } = await supabase.from('products').delete().eq('id', id)
-  
+
   if (error) throw new Error(error.message)
   revalidatePath('/admin/products')
   revalidatePath('/')
@@ -111,7 +128,7 @@ export async function updateSettings(formData: FormData) {
   }
 
   const { error } = await supabase.from('settings').upsert({ key: 'site_config', value })
-  
+
   if (error) throw new Error(error.message)
   revalidatePath('/', 'layout')
 }
