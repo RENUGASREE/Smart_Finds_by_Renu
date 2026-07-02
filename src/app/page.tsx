@@ -196,7 +196,7 @@ export default async function Home() {
           </div>
           <div className="w-full md:w-1/2 relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg">
             <Image
-              src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80"
+              src="/About.png"
               alt="About Renu"
               fill
               className="object-cover"
