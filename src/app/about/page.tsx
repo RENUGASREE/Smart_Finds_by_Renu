@@ -32,14 +32,7 @@ export default async function AboutPage() {
               <p className="mb-4">
                 I personally curate useful products from Amazon and Flipkart, sharing only those that I genuinely find helpful.
               </p>
-              <p className="mb-4">            <Image
-              src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80"
-              alt="About Renu"
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover"
-            />  I love discovering smart lifestyle items that make everyday life easier and more enjoyable.
-              </p>
+              <p className="mb-4">I love discovering smart lifestyle items that make everyday life easier and more enjoyable.</p>
               <p className="mb-4">
                 In addition to product recommendations, I create handmade jewelry and resin art, each piece crafted with love and attention to detail.
               </p>
