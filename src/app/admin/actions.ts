@@ -66,23 +66,28 @@ export async function addProduct(formData: FormData) {
   const featured = formData.get('featured') === 'true' || formData.get('featured') === 'on'
   const handmade = formData.get('handmade') === 'true' || formData.get('handmade') === 'on'
 
-  const file = formData.get('image_file') as File
-  if (!file || file.size === 0) {
-    throw new Error('Please upload a product image.')
-  }
+  let image_url = (formData.get('image_url') as string) || ''
 
-  const fileExt = file.name.split('.').pop()
-  const fileName = `${crypto.randomUUID()}.${fileExt}`
-  const { error: uploadError } = await supabase.storage.from('images').upload(fileName, file)
-  if (uploadError) throw new Error(uploadError.message)
-  const { data: { publicUrl } } = supabase.storage.from('images').getPublicUrl(fileName)
+  if (!image_url) {
+    const file = formData.get('image_file') as File
+    if (!file || file.size === 0) {
+      throw new Error('Please upload a product image.')
+    }
+
+    const fileExt = file.name.split('.').pop()
+    const fileName = `${crypto.randomUUID()}.${fileExt}`
+    const { error: uploadError } = await supabase.storage.from('images').upload(fileName, file)
+    if (uploadError) throw new Error(uploadError.message)
+    const { data: { publicUrl } } = supabase.storage.from('images').getPublicUrl(fileName)
+    image_url = publicUrl
+  }
 
   const data = {
     title,
     slug,
     short_description,
     description: why_i_recommend || short_description,
-    image_url: publicUrl,
+    image_url: image_url,
     affiliate_link,
     platform,
     category_id,

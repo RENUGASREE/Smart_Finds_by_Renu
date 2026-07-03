@@ -1,8 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
+import { getPlatformCta } from "@/lib/platform-cta";
 import { Product } from "@/types";
+import { cn } from "@/lib/utils";
 
 interface ProductCardProps {
   product: Product;
@@ -10,10 +13,18 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-border/60 bg-card shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-card">
+    <article
+      className={cn(
+        "group flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border/50 bg-card",
+        "shadow-[0_2px_16px_-4px_rgb(0_0_0_0.05),0_6px_20px_-8px_rgb(0_0_0_0.06)]",
+        "transition-all duration-500 ease-out",
+        "hover:-translate-y-1.5 hover:border-[var(--accent)]/20",
+        "hover:shadow-[0_8px_32px_-8px_rgb(0_0_0_0.1),0_16px_40px_-12px_rgba(184,149,106,0.12)]"
+      )}
+    >
       <Link
         href={`/product/${product.slug}`}
-        className="relative block aspect-[4/5] overflow-hidden bg-muted"
+        className="relative block aspect-square overflow-hidden bg-[var(--cream)]"
       >
         {product.image_url ? (
           <Image
@@ -21,7 +32,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             alt={product.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-sm text-muted-foreground">
@@ -29,38 +40,54 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
 
-        <div className="absolute left-4 top-4 flex flex-col gap-2">
+        <div className="absolute left-3.5 top-3.5 flex flex-col gap-1.5">
           {product.category?.name && (
-            <Badge className="border-none bg-white/90 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-foreground shadow-sm backdrop-blur-sm">
+            <Badge className="rounded-full border-none bg-white/95 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.12em] text-foreground/80 shadow-[0_2px_8px_rgb(0_0_0_0.06)] backdrop-blur-md">
               {product.category.name}
             </Badge>
           )}
           {product.badge && (
-            <Badge className="border-none bg-[var(--accent)]/90 px-2.5 py-0.5 text-[10px] font-medium text-white shadow-sm backdrop-blur-sm">
+            <Badge className="rounded-full border-none bg-[var(--accent)] px-3 py-1 text-[10px] font-medium tracking-wide text-white shadow-[0_2px_8px_rgba(184,149,106,0.35)]">
               {product.badge}
             </Badge>
           )}
         </div>
       </Link>
 
-      <div className="flex flex-1 flex-col p-5 md:p-6">
+      <div className="flex flex-1 flex-col gap-4 p-5 md:p-6">
         <Link href={`/product/${product.slug}`} className="block">
-          <h3 className="font-heading mb-2 text-xl leading-snug transition-colors group-hover:text-[var(--accent)]">
+          <h3 className="font-heading text-xl leading-snug transition-colors duration-300 group-hover:text-[var(--accent)] md:text-[1.35rem]">
             {product.title}
           </h3>
         </Link>
 
-        <p className="mb-6 line-clamp-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+        <p className="line-clamp-2 flex-1 text-sm leading-relaxed text-muted-foreground">
           {product.short_description}
         </p>
 
-        <Link
-          href={`/product/${product.slug}`}
-          className="inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors hover:text-[var(--accent)]"
-        >
-          View Find
-          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-        </Link>
+        <div className="flex flex-col gap-3 pt-1">
+          <Link
+            href={product.affiliate_link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={buttonVariants({
+              size: "lg",
+              className:
+                "h-11 w-full rounded-full text-sm font-medium shadow-[0_2px_12px_-2px_rgba(184,149,106,0.4)] transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_16px_-2px_rgba(184,149,106,0.5)]",
+            })}
+          >
+            {getPlatformCta(product.platform)}
+            <ExternalLink className="ml-1.5 h-3.5 w-3.5 opacity-80" />
+          </Link>
+
+          <Link
+            href={`/product/${product.slug}`}
+            className="inline-flex items-center justify-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-[var(--accent)]"
+          >
+            Read my review
+            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        </div>
       </div>
     </article>
   );

@@ -16,14 +16,16 @@ export default function FeaturedFindCard({ product, className }: FeaturedFindCar
   return (
     <article
       className={cn(
-        "group overflow-hidden rounded-[2rem] border border-border/60 bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-16px_rgb(0_0_0_0.12)]",
+        "group overflow-hidden rounded-[2rem] border border-border/50 bg-card",
+        "shadow-[0_4px_24px_-8px_rgb(0_0_0_0.08)] transition-all duration-500",
+        "hover:-translate-y-1 hover:shadow-[0_12px_40px_-12px_rgba(184,149,106,0.2)]",
         className
       )}
     >
       <div className="grid md:grid-cols-2">
         <Link
           href={`/product/${product.slug}`}
-          className="relative block aspect-square bg-muted md:aspect-auto md:min-h-[420px]"
+          className="relative block aspect-[4/3] overflow-hidden bg-[var(--cream)] md:aspect-auto md:min-h-[440px]"
         >
           {product.image_url ? (
             <Image
@@ -31,7 +33,7 @@ export default function FeaturedFindCard({ product, className }: FeaturedFindCar
               alt={product.title}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
               priority
             />
           ) : (
@@ -41,25 +43,25 @@ export default function FeaturedFindCard({ product, className }: FeaturedFindCar
           )}
         </Link>
 
-        <div className="flex flex-col justify-center p-8 md:p-12 lg:p-14">
+        <div className="flex flex-col justify-center p-8 md:p-11 lg:p-14">
           {product.category?.name && (
-            <Badge className="mb-4 w-fit border-none bg-secondary px-3 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            <Badge className="mb-5 w-fit rounded-full border-none bg-[var(--cream)] px-3.5 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
               {product.category.name}
             </Badge>
           )}
 
           <Link href={`/product/${product.slug}`}>
-            <h3 className="font-heading mb-4 text-3xl leading-tight md:text-4xl">
+            <h3 className="font-heading mb-5 text-3xl leading-tight tracking-tight transition-colors duration-300 group-hover:text-[var(--accent)] md:text-4xl">
               {product.title}
             </h3>
           </Link>
 
-          <p className="mb-6 text-base leading-relaxed text-muted-foreground md:text-lg">
+          <p className="mb-6 text-base leading-[1.75] text-muted-foreground md:text-lg">
             {product.short_description}
           </p>
 
           {product.why_i_recommend && (
-            <blockquote className="mb-8 border-l-2 border-[var(--accent)] pl-4 text-sm italic leading-relaxed text-foreground/80">
+            <blockquote className="mb-8 rounded-2xl border border-border/50 bg-[var(--cream)]/80 px-5 py-4 text-sm italic leading-relaxed text-foreground/85">
               &ldquo;{product.why_i_recommend}&rdquo;
               <footer className="mt-2 not-italic text-xs font-medium text-muted-foreground">
                 — Renu
@@ -74,7 +76,7 @@ export default function FeaturedFindCard({ product, className }: FeaturedFindCar
             className={buttonVariants({
               size: "lg",
               className:
-                "h-12 w-fit rounded-full px-8 text-sm font-medium shadow-soft",
+                "h-12 w-fit rounded-full px-9 text-sm font-medium shadow-[0_4px_20px_-4px_rgba(184,149,106,0.45)] transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_28px_-4px_rgba(184,149,106,0.5)]",
             })}
           >
             {getPlatformCta(product.platform)}
