@@ -9,6 +9,9 @@ function inferPlatform(link: string): string {
   const lower = link.toLowerCase()
   if (lower.includes('amazon') || lower.includes('amzn')) return 'Amazon'
   if (lower.includes('flipkart')) return 'Flipkart'
+  if (lower.includes('meesho')) return 'Meesho'
+  if (lower.includes('myntra')) return 'Myntra'
+  if (lower.includes('ajio')) return 'Ajio'
   return 'Other'
 }
 
@@ -19,21 +22,24 @@ export async function addCategory(formData: FormData) {
   const slug = (formData.get('slug') as string) || slugify(name)
   const display_order = parseInt(formData.get('display_order') as string) || 0
 
-  let image_url = ''
-  const file = formData.get('image_file') as File
-  if (file && file.size > 0) {
-    const fileExt = file.name.split('.').pop()
-    const fileName = `${crypto.randomUUID()}.${fileExt}`
-    const { error: uploadError } = await supabase.storage.from('images').upload(fileName, file)
-    if (uploadError) throw new Error(uploadError.message)
-    const { data: { publicUrl } } = supabase.storage.from('images').getPublicUrl(fileName)
-    image_url = publicUrl
+  let image_url = (formData.get('image_url') as string) || ''
+
+  if (!image_url) {
+    const file = formData.get('image_file') as File
+    if (file && file.size > 0) {
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${crypto.randomUUID()}.${fileExt}`
+      const { error: uploadError } = await supabase.storage.from('images').upload(fileName, file)
+      if (uploadError) throw new Error(uploadError.message)
+      const { data: { publicUrl } } = supabase.storage.from('images').getPublicUrl(fileName)
+      image_url = publicUrl
+    }
   }
 
   const { error } = await supabase.from('categories').insert({
     name,
     slug,
-    image_url,
+    image_url: image_url || null,
     display_order,
   })
 
@@ -86,12 +92,10 @@ export async function addProduct(formData: FormData) {
     title,
     slug,
     short_description,
-    description: why_i_recommend || short_description,
-    image_url: image_url,
+    image_url,
     affiliate_link,
     platform,
     category_id,
-    price: null,
     badge: null,
     featured,
     handmade,

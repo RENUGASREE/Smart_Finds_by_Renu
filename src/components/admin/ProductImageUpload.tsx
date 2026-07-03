@@ -11,11 +11,13 @@ import { cn } from "@/lib/utils";
 interface ProductImageUploadProps {
   name?: string;
   required?: boolean;
+  label?: string;
 }
 
 export default function ProductImageUpload({
   name = "image_url",
   required = true,
+  label = "Find Image",
 }: ProductImageUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -93,7 +95,7 @@ export default function ProductImageUpload({
 
   return (
     <div className="space-y-3">
-      <Label htmlFor="product-image-upload">Find Image</Label>
+      <Label htmlFor="product-image-upload">{label}</Label>
 
       <input type="hidden" name={name} value={uploadedUrl} required={required} />
 

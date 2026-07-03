@@ -53,8 +53,8 @@ export default async function ProductDetailsPage({
     .limit(4);
 
   const relatedProducts = relatedProductsData || [];
-  const highlights = product.description
-    ? product.description
+  const recommendationPoints = product.why_i_recommend
+    ? product.why_i_recommend
         .split(/\n+/)
         .map((line: string) => line.trim())
         .filter(Boolean)
@@ -122,24 +122,24 @@ export default async function ProductDetailsPage({
             <ExternalLink className="ml-2 h-4 w-4" />
           </Link>
 
-          {product.why_i_recommend && (
+          {recommendationPoints.length === 1 && (
             <div className="mb-8 rounded-[1.5rem] border border-border/60 bg-secondary/40 p-6 md:p-8">
               <p className="mb-3 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
                 Why Renu recommends this
               </p>
               <blockquote className="text-base leading-relaxed text-foreground/90 md:text-lg">
-                &ldquo;{product.why_i_recommend}&rdquo;
+                &ldquo;{recommendationPoints[0]}&rdquo;
               </blockquote>
             </div>
           )}
 
-          {highlights.length > 0 && (
-            <div>
+          {recommendationPoints.length > 1 && (
+            <div className="mb-8">
               <p className="mb-4 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                Key highlights
+                Why Renu recommends this
               </p>
               <ul className="space-y-3">
-                {highlights.map((line: string) => (
+                {recommendationPoints.map((line: string) => (
                   <li
                     key={line}
                     className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground md:text-base"

@@ -6,21 +6,36 @@ export interface Category {
   display_order: number;
 }
 
+export type AffiliatePlatform =
+  | "Amazon"
+  | "Flipkart"
+  | "Meesho"
+  | "Myntra"
+  | "Ajio"
+  | "Other";
+
 export interface Product {
   id: string;
   title: string;
   slug: string;
   short_description: string;
-  description: string;
   image_url: string;
   affiliate_link: string;
-  platform: "Amazon" | "Flipkart" | "Other";
+  platform: AffiliatePlatform;
   category_id: string;
-  category?: Category; // Joined category
-  price?: number;
+  category?: Category;
   badge?: string;
   featured: boolean;
   handmade: boolean;
   why_i_recommend?: string;
   display_order: number;
+}
+
+export interface SiteConfig {
+  website_name: string;
+  tagline: string;
+  instagram_url: string;
+  pinterest_url: string;
+  whatsapp_url: string;
+  contact_email: string;
 }
