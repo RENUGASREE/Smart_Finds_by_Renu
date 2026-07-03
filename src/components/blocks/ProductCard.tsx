@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { getPlatformCta } from "@/lib/platform-cta";
@@ -24,7 +24,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     >
       <Link
         href={`/product/${product.slug}`}
-        className="relative block aspect-square overflow-hidden bg-[var(--cream)]"
+        className="relative block aspect-[4/5] overflow-hidden bg-[var(--cream)]"
       >
         {product.image_url ? (
           <Image
@@ -33,6 +33,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+            loading="lazy"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-sm text-muted-foreground">
@@ -54,14 +55,14 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
       </Link>
 
-      <div className="flex flex-1 flex-col gap-4 p-5 md:p-6">
+      <div className="flex flex-1 flex-col gap-3 p-4 md:p-5">
         <Link href={`/product/${product.slug}`} className="block">
-          <h3 className="font-heading text-xl leading-snug transition-colors duration-300 group-hover:text-[var(--accent)] md:text-[1.35rem]">
+          <h3 className="line-clamp-2 font-heading text-base leading-snug transition-colors duration-300 group-hover:text-[var(--accent)] md:text-lg">
             {product.title}
           </h3>
         </Link>
 
-        <p className="line-clamp-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+        <p className="line-clamp-1 flex-1 text-xs leading-relaxed text-muted-foreground md:text-sm">
           {product.short_description}
         </p>
 
@@ -71,21 +72,13 @@ export default function ProductCard({ product }: ProductCardProps) {
             target="_blank"
             rel="noopener noreferrer"
             className={buttonVariants({
-              size: "lg",
+              size: "sm",
               className:
-                "h-11 w-full rounded-full text-sm font-medium shadow-[0_2px_12px_-2px_rgba(184,149,106,0.4)] transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_16px_-2px_rgba(184,149,106,0.5)]",
+                "h-9 w-full rounded-full text-xs font-medium shadow-[0_2px_12px_-2px_rgba(184,149,106,0.4)] transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_16px_-2px_rgba(184,149,106,0.5)]",
             })}
           >
             {getPlatformCta(product.platform)}
-            <ExternalLink className="ml-1.5 h-3.5 w-3.5 opacity-80" />
-          </Link>
-
-          <Link
-            href={`/product/${product.slug}`}
-            className="inline-flex items-center justify-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-[var(--accent)]"
-          >
-            Read my review
-            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+            <ExternalLink className="ml-1 h-3 w-3 opacity-80" />
           </Link>
         </div>
       </div>

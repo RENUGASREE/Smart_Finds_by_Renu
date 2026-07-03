@@ -34,7 +34,7 @@ export default function FeaturedFindCard({ product, className }: FeaturedFindCar
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-              priority
+              loading="lazy"
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
@@ -59,15 +59,6 @@ export default function FeaturedFindCard({ product, className }: FeaturedFindCar
           <p className="mb-6 text-base leading-[1.75] text-muted-foreground md:text-lg">
             {product.short_description}
           </p>
-
-          {product.why_i_recommend && (
-            <blockquote className="mb-8 rounded-2xl border border-border/50 bg-[var(--cream)]/80 px-5 py-4 text-sm italic leading-relaxed text-foreground/85">
-              &ldquo;{product.why_i_recommend}&rdquo;
-              <footer className="mt-2 not-italic text-xs font-medium text-muted-foreground">
-                — Renu
-              </footer>
-            </blockquote>
-          )}
 
           <Link
             href={product.affiliate_link}

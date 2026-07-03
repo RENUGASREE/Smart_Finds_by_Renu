@@ -27,7 +27,6 @@ export interface Product {
   badge?: string;
   featured: boolean;
   handmade: boolean;
-  why_i_recommend?: string;
   display_order: number;
 }
 

@@ -14,9 +14,10 @@ export default async function Home() {
     { data: categories },
     { data: featuredProducts },
     { data: latestProducts },
+    { data: trendingProducts },
     { data: handmadeProducts },
   ] = await Promise.all([
-    supabase.from("categories").select("*").order("display_order", { ascending: true }),
+    supabase.from("categories").select("*").order("display_order", { ascending: true }).limit(8),
     supabase
       .from("products")
       .select("*, category:categories(name)")
@@ -33,8 +34,15 @@ export default async function Home() {
     supabase
       .from("products")
       .select("*, category:categories(name)")
+      .eq("featured", false)
+      .eq("handmade", false)
+      .order("display_order", { ascending: true })
+      .limit(4),
+    supabase
+      .from("products")
+      .select("*, category:categories(name)")
       .eq("handmade", true)
-      .order("created_at", { ascending: false })
+      .order("display_order", { ascending: true })
       .limit(4),
   ]);
 
@@ -55,7 +63,6 @@ export default async function Home() {
                   alt="Smart Finds by Renu"
                   fill
                   className="object-cover"
-                  priority
                 />
               </div>
             </div>
@@ -111,6 +118,7 @@ export default async function Home() {
                 fill
                 className="object-contain"
                 sizes="(max-width: 768px) 100vw, 50vw"
+                loading="lazy"
               />
             </div>
           </div>
@@ -175,6 +183,26 @@ export default async function Home() {
 
           <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-4">
             {latestProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Trending finds */}
+      {trendingProducts && trendingProducts.length > 0 && (
+        <section className="mx-auto w-full max-w-6xl px-5 pb-24 sm:px-8 md:pb-32">
+          <div className="mb-12 md:mb-14">
+            <p className="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-[var(--accent)]">
+              Popular
+            </p>
+            <h2 className="font-heading text-3xl tracking-tight md:text-4xl">
+              Trending Finds
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-4">
+            {trendingProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

@@ -21,7 +21,6 @@ export const mockProducts: Product[] = [
     badge: "Editor's Pick",
     featured: true,
     handmade: false,
-    why_i_recommend: "I use this every single morning. It extracts the perfect flavor and looks beautiful on my counter.",
     display_order: 1,
   },
   {

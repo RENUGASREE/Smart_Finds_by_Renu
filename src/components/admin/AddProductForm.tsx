@@ -69,16 +69,6 @@ export default function AddProductForm({ categories }: AddProductFormProps) {
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="why_i_recommend">Why I Recommend It</Label>
-          <Textarea
-            id="why_i_recommend"
-            name="why_i_recommend"
-            rows={4}
-            placeholder="Share your personal recommendation in your own words..."
-          />
-        </div>
-
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="category_id">Category</Label>

@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import ProductCard from "@/components/blocks/ProductCard";
 import { Search as SearchIcon } from "lucide-react";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 export const metadata = {
   title: "Search - Smart Finds by Renu",
@@ -10,12 +12,15 @@ export const metadata = {
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; category?: string; platform?: string }>;
+  searchParams: Promise<{ q?: string; category?: string; platform?: string; page?: string }>;
 }) {
   const params = await searchParams;
   const q = params.q?.trim() || "";
   const categoryParam = params.category;
   const platformParam = params.platform;
+  const page = parseInt(params.page || "1");
+  const limit = 12;
+  const offset = (page - 1) * limit;
 
   const supabase = await createClient();
 
@@ -30,7 +35,7 @@ export default async function SearchPage({
 
   if (q) {
     query = query.or(
-      `title.ilike.%${q}%,short_description.ilike.%${q}%,why_i_recommend.ilike.%${q}%`
+      `title.ilike.%${q}%,short_description.ilike.%${q}%`
     );
   }
 
@@ -38,11 +43,13 @@ export default async function SearchPage({
     query = query.eq("categories.slug", categoryParam);
   }
 
-  if (platformParam) {
+  if (platformParam === "Handmade") {
+    query = query.eq("handmade", true);
+  } else if (platformParam) {
     query = query.ilike("platform", platformParam);
   }
 
-  const { data: resultsData } = await query;
+  const { data: resultsData, count } = await query.range(offset, offset + limit - 1);
 
   let results = resultsData || [];
   if (categoryParam) {
@@ -67,7 +74,7 @@ export default async function SearchPage({
                 type="text"
                 name="q"
                 defaultValue={q}
-                placeholder="Search by name or recommendation..."
+                placeholder="Search by name..."
                 className="h-12 w-full rounded-full border border-border/60 bg-background pl-11 pr-4 text-sm outline-none transition-shadow focus:ring-2 focus:ring-[var(--accent)]/20"
               />
             </div>
@@ -94,6 +101,7 @@ export default async function SearchPage({
                 <option value="">All platforms</option>
                 <option value="Amazon">Amazon</option>
                 <option value="Flipkart">Flipkart</option>
+                <option value="Handmade">Handmade</option>
                 <option value="Other">Other</option>
               </select>
 
@@ -109,6 +117,33 @@ export default async function SearchPage({
       </div>
 
       <div>
+        {/* Category filter chips */}
+        <div className="mb-8 flex flex-wrap gap-2">
+          <Link
+            href={`?q=${encodeURIComponent(q)}${platformParam ? `&platform=${platformParam}` : ""}`}
+            className={`rounded-full border px-4 py-2 text-sm font-medium transition-all ${
+              !categoryParam
+                ? "border-[var(--accent)] bg-[var(--accent)] text-white"
+                : "border-border/60 bg-background hover:border-[var(--accent)]/40 hover:text-[var(--accent)]"
+            }`}
+          >
+            All Categories
+          </Link>
+          {(categories || []).map((c) => (
+            <Link
+              key={c.id}
+              href={`?q=${encodeURIComponent(q)}&category=${c.slug}${platformParam ? `&platform=${platformParam}` : ""}`}
+              className={`rounded-full border px-4 py-2 text-sm font-medium transition-all ${
+                categoryParam === c.slug
+                  ? "border-[var(--accent)] bg-[var(--accent)] text-white"
+                  : "border-border/60 bg-background hover:border-[var(--accent)]/40 hover:text-[var(--accent)]"
+              }`}
+            >
+              {c.name}
+            </Link>
+          ))}
+        </div>
+
         <h2 className="font-heading mb-8 text-2xl">
           {results.length} {results.length === 1 ? "find" : "finds"}
           {q && (
@@ -117,11 +152,23 @@ export default async function SearchPage({
         </h2>
 
         {results.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {results.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {results.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+            {count && offset + limit < count && (
+              <div className="mt-12 flex justify-center">
+                <Link
+                  href={`?q=${encodeURIComponent(q)}${categoryParam ? `&category=${categoryParam}` : ""}${platformParam ? `&platform=${platformParam}` : ""}&page=${page + 1}`}
+                  className={buttonVariants({ variant: "outline", className: "h-12 rounded-full px-8 text-sm font-medium" })}
+                >
+                  Load More
+                </Link>
+              </div>
+            )}
+          </>
         ) : (
           <div className="rounded-[2rem] border border-dashed border-border/80 bg-secondary/30 px-6 py-16 text-center">
             <h3 className="font-heading mb-2 text-xl">No finds yet</h3>

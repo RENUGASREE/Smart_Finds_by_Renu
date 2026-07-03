@@ -65,7 +65,6 @@ export async function addProduct(formData: FormData) {
   const title = formData.get('title') as string
   const slug = slugify(title)
   const short_description = formData.get('short_description') as string
-  const why_i_recommend = (formData.get('why_i_recommend') as string) || null
   const affiliate_link = formData.get('affiliate_link') as string
   const category_id = formData.get('category_id') as string
   const platform = (formData.get('platform') as string) || inferPlatform(affiliate_link)
@@ -99,7 +98,6 @@ export async function addProduct(formData: FormData) {
     badge: null,
     featured,
     handmade,
-    why_i_recommend,
     display_order: 0,
   }
 

@@ -53,12 +53,6 @@ export default async function ProductDetailsPage({
     .limit(4);
 
   const relatedProducts = relatedProductsData || [];
-  const recommendationPoints = product.why_i_recommend
-    ? product.why_i_recommend
-        .split(/\n+/)
-        .map((line: string) => line.trim())
-        .filter(Boolean)
-    : [];
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 md:py-24">
@@ -121,36 +115,6 @@ export default async function ProductDetailsPage({
             {getAffiliateCta(product.platform)}
             <ExternalLink className="ml-2 h-4 w-4" />
           </Link>
-
-          {recommendationPoints.length === 1 && (
-            <div className="mb-8 rounded-[1.5rem] border border-border/60 bg-secondary/40 p-6 md:p-8">
-              <p className="mb-3 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                Why Renu recommends this
-              </p>
-              <blockquote className="text-base leading-relaxed text-foreground/90 md:text-lg">
-                &ldquo;{recommendationPoints[0]}&rdquo;
-              </blockquote>
-            </div>
-          )}
-
-          {recommendationPoints.length > 1 && (
-            <div className="mb-8">
-              <p className="mb-4 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                Why Renu recommends this
-              </p>
-              <ul className="space-y-3">
-                {recommendationPoints.map((line: string) => (
-                  <li
-                    key={line}
-                    className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground md:text-base"
-                  >
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent)]" />
-                    {line}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
       </div>
 
