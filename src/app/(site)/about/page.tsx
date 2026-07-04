@@ -36,15 +36,15 @@ export default async function AboutPage() {
     <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 md:py-28">
       <div className="mb-16 text-center md:mb-20">
         <h1 className="font-heading mb-4 text-4xl leading-[1.1] tracking-tight sm:text-5xl md:text-[3.25rem]">
-          ABOUT SMART FINDS BY RENU
+          ✨ ABOUT SMART FINDS BY RENU
         </h1>
         <p className="mb-6 text-2xl font-medium text-[var(--accent)] md:text-3xl">
-          Curated. Handmade. Heartmade.
+          Curated. Handmade. Heartmade. 🤍
         </p>
         <div className="mb-6 space-y-2 text-lg text-muted-foreground md:text-xl">
-          <p>Amazon & Flipkart Finds</p>
-          <p>Handmade Jewelry</p>
-          <p>Resin Art Creations</p>
+          <p>🛍️ Amazon & Flipkart Finds</p>
+          <p>💍 Handmade Jewelry</p>
+          <p>🎨 Resin Art Creations</p>
         </div>
         <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
           Discover products and creations that make everyday life a little better...
