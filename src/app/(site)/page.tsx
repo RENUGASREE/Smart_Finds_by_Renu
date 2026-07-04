@@ -46,6 +46,8 @@ export default async function Home() {
       .limit(4),
   ]);
 
+  console.log('Featured products with platform:', featuredProducts?.[0]);
+
   return (
     <div className="flex flex-col">
       {/* Hero */}
