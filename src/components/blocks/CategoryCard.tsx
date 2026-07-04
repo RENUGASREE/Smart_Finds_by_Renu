@@ -27,7 +27,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
             src={category.image_url}
             alt={category.name}
             fill
-            className="object-cover"
+            className="object-contain object-center"
             sizes="64px"
           />
         </div>

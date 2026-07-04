@@ -20,27 +20,27 @@ export default async function Home() {
     supabase.from("categories").select("id, name, slug, image_url, display_order").order("display_order", { ascending: true }).limit(8),
     supabase
       .from("products")
-      .select("*, category:categories(name), platform:platforms(name)")
+      .select("*, category:categories(name), platform:platforms(id,name)")
       .eq("featured", true)
       .order("display_order", { ascending: true })
       .limit(3),
     supabase
       .from("products")
-      .select("*, category:categories(name), platform:platforms(name)")
+      .select("*, category:categories(name), platform:platforms(id,name)")
       .eq("featured", false)
       .eq("handmade", false)
       .order("created_at", { ascending: false })
       .limit(4),
     supabase
       .from("products")
-      .select("*, category:categories(name), platform:platforms(name)")
+      .select("*, category:categories(name), platform:platforms(id,name)")
       .eq("featured", false)
       .eq("handmade", false)
       .order("display_order", { ascending: true })
       .limit(4),
     supabase
       .from("products")
-      .select("*, category:categories(name), platform:platforms(name)")
+      .select("*, category:categories(name), platform:platforms(id,name)")
       .eq("handmade", true)
       .order("display_order", { ascending: true })
       .limit(4),
