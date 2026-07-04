@@ -13,7 +13,7 @@ export default async function ProductsPage() {
   const supabase = await createClient();
   const { data: products } = await supabase
     .from("products")
-    .select("*, category:categories(name)")
+    .select("*, category:categories(name), platform:platforms(name)")
     .order("created_at", { ascending: false });
 
   const { data: platforms } = await supabase
@@ -58,7 +58,7 @@ export default async function ProductsPage() {
                   )}
                 </TableCell>
                 <TableCell>{product.category?.name}</TableCell>
-                <TableCell>{product.platform}</TableCell>
+                <TableCell>{product.platform?.name || product.platform_name || '-'}</TableCell>
                 <TableCell>
                   <div className="flex flex-wrap gap-1">
                     {product.handmade && <Badge variant="secondary">Handmade</Badge>}

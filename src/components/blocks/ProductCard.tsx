@@ -32,7 +32,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             alt={product.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-            className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+            className="object-contain object-center transition-transform duration-700 ease-out group-hover:scale-[1.04]"
             loading="lazy"
           />
         ) : (
@@ -77,7 +77,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 "h-9 w-full rounded-full text-xs font-medium shadow-[0_2px_12px_-2px_rgba(184,149,106,0.4)] transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_16px_-2px_rgba(184,149,106,0.5)]",
             })}
           >
-            {getPlatformCta(product.platform)}
+            {getPlatformCta(product.platform || product.platform_name || 'Other')}
             <ExternalLink className="ml-1 h-3 w-3 opacity-80" />
           </Link>
         </div>

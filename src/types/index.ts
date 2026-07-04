@@ -12,8 +12,6 @@ export interface Platform {
   display_order: number;
 }
 
-export type AffiliatePlatform = string;
-
 export interface Product {
   id: string;
   title: string;
@@ -21,7 +19,9 @@ export interface Product {
   short_description: string;
   image_url: string;
   affiliate_link: string;
-  platform: AffiliatePlatform;
+  platform_id?: string;
+  platform?: Platform;
+  platform_name?: string; // For backward compatibility during migration
   category_id: string;
   category?: Category;
   badge?: string;

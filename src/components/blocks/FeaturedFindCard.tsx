@@ -70,7 +70,7 @@ export default function FeaturedFindCard({ product, className }: FeaturedFindCar
                 "h-12 w-fit rounded-full px-9 text-sm font-medium shadow-[0_4px_20px_-4px_rgba(184,149,106,0.45)] transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_28px_-4px_rgba(184,149,106,0.5)]",
             })}
           >
-            {getPlatformCta(product.platform)}
+            {getPlatformCta(product.platform || product.platform_name || 'Other')}
             <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </div>

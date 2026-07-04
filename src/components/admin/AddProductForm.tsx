@@ -95,17 +95,17 @@ export default function AddProductForm({ categories, platforms }: AddProductForm
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="platform">Platform</Label>
+            <Label htmlFor="platform_id">Platform</Label>
             {hasPlatforms ? (
               <select
-                id="platform"
-                name="platform"
+                id="platform_id"
+                name="platform_id"
                 required
                 className="flex h-10 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none transition-colors focus:border-[var(--accent)]/50 focus:ring-2 focus:ring-[var(--accent)]/20"
               >
                 <option value="">Select platform</option>
                 {platforms.map((platform) => (
-                  <option key={platform.id} value={platform.name}>
+                  <option key={platform.id} value={platform.id}>
                     {platform.name}
                   </option>
                 ))}

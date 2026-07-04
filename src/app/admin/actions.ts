@@ -67,7 +67,7 @@ export async function addProduct(formData: FormData) {
   const short_description = formData.get('short_description') as string
   const affiliate_link = formData.get('affiliate_link') as string
   const category_id = formData.get('category_id') as string
-  const platform = (formData.get('platform') as string) || inferPlatform(affiliate_link)
+  const platform_id = formData.get('platform_id') as string
   const featured = formData.get('featured') === 'true' || formData.get('featured') === 'on'
   const handmade = formData.get('handmade') === 'true' || formData.get('handmade') === 'on'
 
@@ -93,7 +93,7 @@ export async function addProduct(formData: FormData) {
     short_description,
     image_url,
     affiliate_link,
-    platform,
+    platform_id,
     category_id,
     badge: null,
     featured,
