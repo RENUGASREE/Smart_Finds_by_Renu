@@ -6,7 +6,11 @@ import {
   Leaf,
   Gem,
   Palette,
-  FolderOpen,
+  Heart,
+  ShoppingBag,
+  Shirt,
+  Baby,
+  BookOpen,
   type LucideIcon,
 } from "lucide-react";
 
@@ -21,9 +25,14 @@ const iconMap: Record<string, LucideIcon> = {
   jewellery: Gem,
   jewelry: Gem,
   "resin-art": Palette,
-  handmade: Palette,
+  handmade: Heart,
+  fashion: Shirt,
+  clothing: Shirt,
+  shopping: ShoppingBag,
+  kids: Baby,
+  books: BookOpen,
 };
 
 export function getCategoryIcon(slug: string): LucideIcon {
-  return iconMap[slug.toLowerCase()] ?? FolderOpen;
+  return iconMap[slug.toLowerCase()] ?? ShoppingBag;
 }
