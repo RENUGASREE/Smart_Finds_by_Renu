@@ -12,7 +12,7 @@ export default async function CategoriesPage() {
   const supabase = await createClient();
   const { data: categories } = await supabase
     .from("categories")
-    .select("id, name, slug, image_url, display_order")
+    .select("id, name, slug, display_order")
     .order("display_order", { ascending: true });
 
   return (

@@ -17,7 +17,7 @@ export default async function Home() {
     { data: trendingProducts },
     { data: handmadeProducts },
   ] = await Promise.all([
-    supabase.from("categories").select("id, name, slug, image_url, display_order").order("display_order", { ascending: true }).limit(8),
+    supabase.from("categories").select("id, name, slug, display_order").order("display_order", { ascending: true }).limit(8),
     supabase
       .from("products")
       .select("*, category:categories(name), platform:platforms(id,name)")
