@@ -112,7 +112,7 @@ export default async function ProductDetailsPage({
               className: "mb-10 h-14 w-full rounded-full text-base shadow-soft sm:w-fit sm:px-10",
             })}
           >
-            {getAffiliateCta(product.platform)}
+            {getAffiliateCta(product.platform || product.platform_name || 'Other')}
             <ExternalLink className="ml-2 h-4 w-4" />
           </Link>
         </div>

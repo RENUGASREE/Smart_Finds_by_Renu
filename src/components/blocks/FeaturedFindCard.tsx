@@ -33,7 +33,7 @@ export default function FeaturedFindCard({ product, className }: FeaturedFindCar
               alt={product.title}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+              className="object-contain object-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
               loading="lazy"
             />
           ) : (
