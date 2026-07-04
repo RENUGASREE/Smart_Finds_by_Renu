@@ -25,14 +25,14 @@ export default function FeaturedFindCard({ product, className }: FeaturedFindCar
       <div className="grid md:grid-cols-2">
         <Link
           href={`/product/${product.slug}`}
-          className="relative block aspect-[4/3] overflow-hidden bg-[var(--cream)] md:aspect-auto md:min-h-[440px]"
+          className="relative block aspect-[4/3] overflow-hidden bg-[var(--cream)] md:aspect-square lg:aspect-[4/5]"
         >
           {product.image_url ? (
             <Image
               src={product.image_url}
               alt={product.title}
               fill
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw"
               className="object-contain object-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
               loading="lazy"
             />
