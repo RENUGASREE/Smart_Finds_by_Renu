@@ -8,5 +8,10 @@ export default async function NewProductPage() {
     .select("*")
     .order("name");
 
-  return <AddProductForm categories={categories} />;
+  const { data: platforms } = await supabase
+    .from("platforms")
+    .select("*")
+    .order("display_order", { ascending: true });
+
+  return <AddProductForm categories={categories} platforms={platforms} />;
 }

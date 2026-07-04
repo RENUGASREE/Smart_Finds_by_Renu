@@ -123,6 +123,33 @@ export async function deleteProduct(id: string) {
   revalidatePath('/')
 }
 
+export async function addPlatform(formData: FormData) {
+  const supabase = await createClient()
+
+  const name = formData.get('name') as string
+  const display_order = parseInt(formData.get('display_order') as string) || 0
+
+  const { error } = await supabase.from('platforms').insert({
+    name,
+    display_order,
+  })
+
+  if (error) throw new Error(error.message)
+
+  revalidatePath('/admin/products')
+  revalidatePath('/')
+  redirect('/admin/products')
+}
+
+export async function deletePlatform(id: string) {
+  const supabase = await createClient()
+  const { error } = await supabase.from('platforms').delete().eq('id', id)
+
+  if (error) throw new Error(error.message)
+  revalidatePath('/admin/products')
+  revalidatePath('/')
+}
+
 export async function updateSettings(formData: FormData) {
   const supabase = await createClient()
   const value = {

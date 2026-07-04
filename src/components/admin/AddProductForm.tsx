@@ -8,24 +8,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import ProductImageUpload from "@/components/admin/ProductImageUpload";
 import { addProduct } from "@/app/admin/actions";
-import { Category } from "@/types";
+import { Category, Platform } from "@/types";
 import { ArrowLeft, Plus } from "lucide-react";
-
-const PLATFORMS = [
-  "Amazon",
-  "Flipkart",
-  "Meesho",
-  "Myntra",
-  "Ajio",
-  "Other",
-] as const;
 
 interface AddProductFormProps {
   categories: Category[] | null;
+  platforms: Platform[] | null;
 }
 
-export default function AddProductForm({ categories }: AddProductFormProps) {
+export default function AddProductForm({ categories, platforms }: AddProductFormProps) {
   const hasCategories = categories && categories.length > 0;
+  const hasPlatforms = platforms && platforms.length > 0;
 
   return (
     <div className="mx-auto max-w-2xl pb-10">
@@ -103,18 +96,33 @@ export default function AddProductForm({ categories }: AddProductFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="platform">Platform</Label>
-            <select
-              id="platform"
-              name="platform"
-              defaultValue="Amazon"
-              className="flex h-10 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none transition-colors focus:border-[var(--accent)]/50 focus:ring-2 focus:ring-[var(--accent)]/20"
-            >
-              {PLATFORMS.map((platform) => (
-                <option key={platform} value={platform}>
-                  {platform}
-                </option>
-              ))}
-            </select>
+            {hasPlatforms ? (
+              <select
+                id="platform"
+                name="platform"
+                required
+                className="flex h-10 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none transition-colors focus:border-[var(--accent)]/50 focus:ring-2 focus:ring-[var(--accent)]/20"
+              >
+                <option value="">Select platform</option>
+                {platforms.map((platform) => (
+                  <option key={platform.id} value={platform.name}>
+                    {platform.name}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <div className="rounded-xl border border-dashed border-border/80 bg-background px-4 py-5 text-center">
+                <p className="mb-3 text-sm text-muted-foreground">
+                  No platforms yet. Create one first.
+                </p>
+                <Link href="/admin/products">
+                  <Button type="button" variant="outline" size="sm">
+                    <Plus className="mr-1.5 h-4 w-4" />
+                    Manage Platforms
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
 

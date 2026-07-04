@@ -6,13 +6,13 @@ export interface Category {
   display_order: number;
 }
 
-export type AffiliatePlatform =
-  | "Amazon"
-  | "Flipkart"
-  | "Meesho"
-  | "Myntra"
-  | "Ajio"
-  | "Other";
+export interface Platform {
+  id: string;
+  name: string;
+  display_order: number;
+}
+
+export type AffiliatePlatform = string;
 
 export interface Product {
   id: string;

@@ -93,7 +93,7 @@ export default function Navbar() {
 
       <div
         className={cn(
-          "fixed inset-0 z-50 bg-black/40 backdrop-blur-sm transition-opacity duration-300 md:hidden",
+          "fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm transition-opacity duration-300 md:hidden",
           menuOpen ? "opacity-100" : "pointer-events-none opacity-0"
         )}
         onClick={() => setMenuOpen(false)}
@@ -102,7 +102,7 @@ export default function Navbar() {
 
       <div
         className={cn(
-          "fixed inset-y-0 right-0 z-50 w-[min(88vw,20rem)] border-l border-border/60 bg-background p-6 shadow-[0_8px_40px_-8px_rgb(0_0_0_0.15)] transition-transform duration-300 ease-out md:hidden",
+          "fixed inset-y-0 right-0 z-[70] w-[min(88vw,20rem)] border-l border-border/60 bg-background p-6 shadow-[0_8px_40px_-8px_rgb(0_0_0_0.15)] transition-transform duration-300 ease-out md:hidden",
           menuOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
