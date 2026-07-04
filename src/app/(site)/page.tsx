@@ -20,33 +20,31 @@ export default async function Home() {
     supabase.from("categories").select("id, name, slug, display_order").order("display_order", { ascending: true }).limit(8),
     supabase
       .from("products")
-      .select("*, category:categories(name), platform:platforms(id,name)")
+      .select("*, category:categories(name), platform:platforms!platform_id(id,name)")
       .eq("featured", true)
       .order("display_order", { ascending: true })
       .limit(3),
     supabase
       .from("products")
-      .select("*, category:categories(name), platform:platforms(id,name)")
+      .select("*, category:categories(name), platform:platforms!platform_id(id,name)")
       .eq("featured", false)
       .eq("handmade", false)
       .order("created_at", { ascending: false })
       .limit(4),
     supabase
       .from("products")
-      .select("*, category:categories(name), platform:platforms(id,name)")
+      .select("*, category:categories(name), platform:platforms!platform_id(id,name)")
       .eq("featured", false)
       .eq("handmade", false)
       .order("display_order", { ascending: true })
       .limit(4),
     supabase
       .from("products")
-      .select("*, category:categories(name), platform:platforms(id,name)")
+      .select("*, category:categories(name), platform:platforms!platform_id(id,name)")
       .eq("handmade", true)
       .order("display_order", { ascending: true })
       .limit(4),
   ]);
-
-  console.log('Featured products with platform:', featuredProducts?.[0]);
 
   return (
     <div className="flex flex-col">

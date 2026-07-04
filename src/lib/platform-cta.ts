@@ -1,6 +1,5 @@
 export function getPlatformCta(platform: string | { name?: string } | undefined): string {
   const platformName = typeof platform === 'string' ? platform : platform?.name;
-  console.log('getPlatformCta - raw platform:', platform, 'platformName:', platformName);
   switch (platformName) {
     case "Amazon":
       return "View on Amazon";
@@ -19,7 +18,6 @@ export function getPlatformCta(platform: string | { name?: string } | undefined)
 
 export function getAffiliateCta(platform: string | { name?: string } | undefined): string {
   const platformName = typeof platform === 'string' ? platform : platform?.name;
-  console.log('getAffiliateCta - raw platform:', platform, 'platformName:', platformName);
   switch (platformName) {
     case "Amazon":
       return "Buy on Amazon";

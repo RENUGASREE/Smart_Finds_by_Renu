@@ -31,7 +31,7 @@ export default async function SearchPage({
 
   let query = supabase
     .from("products")
-    .select("*, category:categories(name, slug), platform:platforms(id,name)");
+    .select("*, category:categories(name, slug), platform:platforms!platform_id(id,name)");
 
   if (q) {
     query = query.or(

@@ -77,11 +77,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 "h-9 w-full rounded-full text-xs font-medium shadow-[0_2px_12px_-2px_rgba(184,149,106,0.4)] transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_16px_-2px_rgba(184,149,106,0.5)]",
             })}
           >
-            {(() => {
-              const cta = getPlatformCta(product.platform || product.platform_name || 'Other');
-              console.log('ProductCard CTA:', { platform: product.platform, platform_name: product.platform_name, cta });
-              return cta;
-            })()}
+            {getPlatformCta(product.platform || product.platform_name || 'Other')}
             <ExternalLink className="ml-1 h-3 w-3 opacity-80" />
           </Link>
         </div>
