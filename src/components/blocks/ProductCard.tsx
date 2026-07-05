@@ -12,6 +12,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  console.log('ProductCard product data:', JSON.stringify(product, null, 2));
   return (
     <article
       className={cn(
