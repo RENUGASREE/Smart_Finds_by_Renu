@@ -36,18 +36,9 @@ export default async function ProductDetailsPage({
   const { slug } = await params;
   const supabase = await createClient();
 
-  // Fetch all platforms separately
-  const { data: platforms } = await supabase
-    .from("platforms")
-    .select("id, name")
-    .order("display_order", { ascending: true });
-
-  // Create a map of platform ID to name
-  const platformMap = new Map(platforms?.map(p => [p.id, p.name]) || []);
-
   const { data: product } = await supabase
     .from("products")
-    .select("*, category:categories(name), platform_id")
+    .select("*, category:categories(name)")
     .eq("slug", slug)
     .single();
 
@@ -57,31 +48,22 @@ export default async function ProductDetailsPage({
 
   const { data: relatedProductsData } = await supabase
     .from("products")
-    .select("*, category:categories(name), platform_id")
+    .select("*, category:categories(name)")
     .eq("category_id", product.category_id)
     .neq("id", product.id)
     .limit(4);
 
-  // Add platform name to product and related products
-  const productWithPlatform = {
-    ...product,
-    platform_name: platformMap.get(product.platform_id)
-  };
-
-  const relatedProducts = relatedProductsData?.map(p => ({
-    ...p,
-    platform_name: platformMap.get(p.platform_id)
-  })) || [];
+  const relatedProducts = relatedProductsData || [];
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 md:py-24">
       <div className="mb-20 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
         <div className="overflow-hidden rounded-[2rem] border border-border/60 bg-white shadow-card">
           <div className="relative aspect-square bg-muted">
-            {productWithPlatform.image_url ? (
+            {product.image_url ? (
               <Image
-                src={productWithPlatform.image_url}
-                alt={productWithPlatform.title}
+                src={product.image_url}
+                alt={product.title}
                 fill
                 className="object-cover"
                 priority
@@ -97,33 +79,33 @@ export default async function ProductDetailsPage({
 
         <div className="flex flex-col">
           <div className="mb-4 flex flex-wrap items-center gap-2">
-            {productWithPlatform.category?.name && (
+            {product.category?.name && (
               <Badge className="border-none bg-secondary px-3 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                {productWithPlatform.category.name}
+                {product.category.name}
               </Badge>
             )}
-            {productWithPlatform.handmade && (
+            {product.handmade && (
               <Badge className="border-none bg-[var(--beige)] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.14em]">
                 Handmade
               </Badge>
             )}
-            {productWithPlatform.badge && (
+            {product.badge && (
               <Badge className="border-none bg-[var(--accent)]/10 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-[var(--accent)]">
-                {productWithPlatform.badge}
+                {product.badge}
               </Badge>
             )}
           </div>
 
           <h1 className="font-heading mb-5 text-4xl leading-tight md:text-5xl">
-            {productWithPlatform.title}
+            {product.title}
           </h1>
 
           <p className="mb-8 text-lg leading-relaxed text-muted-foreground">
-            {productWithPlatform.short_description}
+            {product.short_description}
           </p>
 
           <Link
-            href={productWithPlatform.affiliate_link}
+            href={product.affiliate_link}
             target="_blank"
             rel="noopener noreferrer"
             className={buttonVariants({
@@ -131,7 +113,7 @@ export default async function ProductDetailsPage({
               className: "mb-10 h-14 w-full rounded-full text-base shadow-soft sm:w-fit sm:px-10",
             })}
           >
-            {getAffiliateCta(productWithPlatform.platform || productWithPlatform.platform_name || 'Other')}
+            {getAffiliateCta(product.platform || product.platform_name || 'Other')}
             <ExternalLink className="ml-2 h-4 w-4" />
           </Link>
         </div>

@@ -50,27 +50,12 @@ export default async function CategoryPage({
     notFound();
   }
 
-  // Fetch all platforms separately
-  const { data: platforms } = await supabase
-    .from("platforms")
-    .select("id, name")
-    .order("display_order", { ascending: true });
-
-  // Create a map of platform ID to name
-  const platformMap = new Map(platforms?.map(p => [p.id, p.name]) || []);
-
   const { data: products, count } = await supabase
     .from("products")
-    .select("*, category:categories(name), platform_id", { count: "exact" })
+    .select("*, category:categories(name)", { count: "exact" })
     .eq("category_id", category.id)
     .order("created_at", { ascending: false })
     .range(offset, offset + limit - 1);
-
-  // Add platform name to products
-  const productsWithPlatform = products?.map(p => ({
-    ...p,
-    platform_name: platformMap.get(p.platform_id)
-  })) || [];
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 md:py-24">
@@ -92,10 +77,10 @@ export default async function CategoryPage({
         </p>
       </div>
 
-      {(productsWithPlatform || []).length > 0 ? (
+      {(products || []).length > 0 ? (
         <>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {(productsWithPlatform || []).map((product) => (
+            {(products || []).map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

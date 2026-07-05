@@ -87,6 +87,13 @@ export async function addProduct(formData: FormData) {
     image_url = publicUrl
   }
 
+  // Fetch platform name from platforms table
+  let platform_name = null
+  if (platform_id) {
+    const { data: platform } = await supabase.from('platforms').select('name').eq('id', platform_id).single()
+    platform_name = platform?.name
+  }
+
   const data = {
     title,
     slug,
@@ -94,6 +101,7 @@ export async function addProduct(formData: FormData) {
     image_url,
     affiliate_link,
     platform_id,
+    platform_name,
     category_id,
     badge: null,
     featured,

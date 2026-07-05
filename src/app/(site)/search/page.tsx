@@ -29,18 +29,9 @@ export default async function SearchPage({
     .select("id, name, slug")
     .order("name");
 
-  // Fetch all platforms separately
-  const { data: platforms } = await supabase
-    .from("platforms")
-    .select("id, name")
-    .order("display_order", { ascending: true });
-
-  // Create a map of platform ID to name
-  const platformMap = new Map(platforms?.map(p => [p.id, p.name]) || []);
-
   let query = supabase
     .from("products")
-    .select("*, category:categories(name, slug), platform_id");
+    .select("*, category:categories(name, slug)");
 
   if (q) {
     query = query.or(
@@ -62,11 +53,7 @@ export default async function SearchPage({
 
   const { data: resultsData, count } = await query.range(offset, offset + limit - 1);
 
-  // Add platform name to products
-  let results = resultsData?.map(p => ({
-    ...p,
-    platform_name: platformMap.get(p.platform_id)
-  })) || [];
+  let results = resultsData || [];
 
   if (categoryParam) {
     results = results.filter((p) => p.category?.slug === categoryParam);

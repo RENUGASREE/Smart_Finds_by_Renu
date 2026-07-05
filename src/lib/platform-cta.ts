@@ -1,6 +1,5 @@
 export function getPlatformCta(platform: string | { name?: string } | undefined): string {
   const platformName = typeof platform === 'string' ? platform : platform?.name;
-  console.log('getPlatformCta called with:', { platform, platformName, type: typeof platform });
   switch (platformName) {
     case "Amazon":
       return "View on Amazon";
@@ -13,7 +12,6 @@ export function getPlatformCta(platform: string | { name?: string } | undefined)
     case "Ajio":
       return "View on Ajio";
     default:
-      console.log('No match for platformName:', platformName);
       return "View Find";
   }
 }
