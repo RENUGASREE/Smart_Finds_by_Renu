@@ -1,5 +1,6 @@
 export function getPlatformCta(platform: string | { name?: string } | undefined): string {
   const platformName = typeof platform === 'string' ? platform : platform?.name;
+  console.log('getPlatformCta:', { platform, platformName, type: typeof platform });
   switch (platformName) {
     case "Amazon":
       return "View on Amazon";

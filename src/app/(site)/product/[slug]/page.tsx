@@ -38,7 +38,7 @@ export default async function ProductDetailsPage({
 
   const { data: product } = await supabase
     .from("products")
-    .select("*, category:categories(name)")
+    .select("*, category:categories(name), platform:platforms!platform_id(id,name)")
     .eq("slug", slug)
     .single();
 
@@ -48,7 +48,7 @@ export default async function ProductDetailsPage({
 
   const { data: relatedProductsData } = await supabase
     .from("products")
-    .select("*, category:categories(name)")
+    .select("*, category:categories(name), platform:platforms!platform_id(id,name)")
     .eq("category_id", product.category_id)
     .neq("id", product.id)
     .limit(4);

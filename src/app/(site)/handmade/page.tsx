@@ -22,7 +22,7 @@ export default async function HandmadePage({
 
   const { data: products, count } = await supabase
     .from("products")
-    .select("*, category:categories(name)", { count: "exact" })
+    .select("*, category:categories(name), platform:platforms!platform_id(id,name)", { count: "exact" })
     .eq("handmade", true)
     .order("created_at", { ascending: false })
     .range(offset, offset + limit - 1);
