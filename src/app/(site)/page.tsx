@@ -62,10 +62,12 @@ export default async function Home() {
 
   // Add platform name to products
   const addPlatformName = (products: any[] | null | undefined) => {
-    return products?.map(p => ({
+    const result = products?.map(p => ({
       ...p,
       platform_name: getPlatformName(p.platform_id)
     })) || [];
+    console.log('addPlatformName result sample:', result[0]);
+    return result;
   };
 
   const featuredProductsWithPlatform = addPlatformName(featuredProducts);

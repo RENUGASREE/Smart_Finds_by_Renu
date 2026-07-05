@@ -12,6 +12,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  console.log('ProductCard received product:', { id: product.id, title: product.title, platform_id: product.platform_id, platform_name: product.platform_name, platform: product.platform });
   return (
     <article
       className={cn(
