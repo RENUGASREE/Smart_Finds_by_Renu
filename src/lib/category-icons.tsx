@@ -11,11 +11,21 @@ import {
   Shirt,
   Baby,
   BookOpen,
+  Scissors,
+  Droplets,
+  Bath,
   type LucideIcon,
 } from "lucide-react";
 
 const iconMap: Record<string, LucideIcon> = {
-  beauty: Sparkles,
+  "beauty-skincare": Sparkles,
+  "beauty": Sparkles,
+  "hair-care": Scissors,
+  "hair": Scissors,
+  "bath-body": Bath,
+  "bath": Bath,
+  "home-cleaning-essentials": Home,
+  "home-cleaning": Home,
   kitchen: UtensilsCrossed,
   electronics: Laptop,
   tech: Laptop,

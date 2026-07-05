@@ -20,31 +20,58 @@ export default async function Home() {
     supabase.from("categories").select("id, name, slug, display_order").order("display_order", { ascending: true }).limit(8),
     supabase
       .from("products")
-      .select("*, category:categories(name), platform:platforms!platform_id(id,name)")
+      .select("*, category:categories(name), platform_id")
       .eq("featured", true)
-      .order("display_order", { ascending: true })
+      .order("created_at", { ascending: false })
       .limit(3),
     supabase
       .from("products")
-      .select("*, category:categories(name), platform:platforms!platform_id(id,name)")
+      .select("*, category:categories(name), platform_id")
       .eq("featured", false)
       .eq("handmade", false)
       .order("created_at", { ascending: false })
       .limit(4),
     supabase
       .from("products")
-      .select("*, category:categories(name), platform:platforms!platform_id(id,name)")
+      .select("*, category:categories(name), platform_id")
       .eq("featured", false)
       .eq("handmade", false)
-      .order("display_order", { ascending: true })
+      .order("created_at", { ascending: false })
       .limit(4),
     supabase
       .from("products")
-      .select("*, category:categories(name), platform:platforms!platform_id(id,name)")
+      .select("*, category:categories(name), platform_id")
       .eq("handmade", true)
-      .order("display_order", { ascending: true })
+      .order("created_at", { ascending: false })
       .limit(4),
   ]);
+
+  // Fetch all platforms separately
+  const { data: platforms } = await supabase
+    .from("platforms")
+    .select("id, name")
+    .order("display_order", { ascending: true });
+
+  // Create a map of platform ID to name
+  const platformMap = new Map(platforms?.map(p => [p.id, p.name]) || []);
+
+  // Helper function to get platform name
+  const getPlatformName = (platformId: string | null | undefined) => {
+    return platformId ? platformMap.get(platformId) : null;
+  };
+
+  // Add platform name to products
+  const addPlatformName = (products: any[] | null | undefined) => {
+    return products?.map(p => ({
+      ...p,
+      platform_name: getPlatformName(p.platform_id)
+    })) || [];
+  };
+
+  const featuredProductsWithPlatform = addPlatformName(featuredProducts);
+  const latestProductsWithPlatform = addPlatformName(latestProducts);
+  const trendingProductsWithPlatform = addPlatformName(trendingProducts);
+  const handmadeProductsWithPlatform = addPlatformName(handmadeProducts);
 
   return (
     <div className="flex flex-col">
@@ -150,7 +177,7 @@ export default async function Home() {
       </section>
 
       {/* Featured finds */}
-      {featuredProducts && featuredProducts.length > 0 && (
+      {featuredProductsWithPlatform && featuredProductsWithPlatform.length > 0 && (
         <section className="mx-auto w-full max-w-6xl px-5 pb-24 sm:px-8 md:pb-32">
           <div className="mb-12 md:mb-14">
             <p className="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-[var(--accent)]">
@@ -162,7 +189,7 @@ export default async function Home() {
           </div>
 
           <div className="space-y-10 md:space-y-12">
-            {featuredProducts.map((product) => (
+            {featuredProductsWithPlatform.map((product) => (
               <FeaturedFindCard key={product.id} product={product} />
             ))}
           </div>
@@ -170,7 +197,7 @@ export default async function Home() {
       )}
 
       {/* Latest finds */}
-      {latestProducts && latestProducts.length > 0 && (
+      {latestProductsWithPlatform && latestProductsWithPlatform.length > 0 && (
         <section className="mx-auto w-full max-w-6xl px-5 pb-24 sm:px-8 md:pb-32">
           <div className="mb-12 md:mb-14">
             <p className="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-[var(--accent)]">
@@ -182,7 +209,7 @@ export default async function Home() {
           </div>
 
           <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-4">
-            {latestProducts.map((product) => (
+            {latestProductsWithPlatform.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
@@ -190,7 +217,7 @@ export default async function Home() {
       )}
 
       {/* Trending finds */}
-      {trendingProducts && trendingProducts.length > 0 && (
+      {trendingProductsWithPlatform && trendingProductsWithPlatform.length > 0 && (
         <section className="mx-auto w-full max-w-6xl px-5 pb-24 sm:px-8 md:pb-32">
           <div className="mb-12 md:mb-14">
             <p className="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-[var(--accent)]">
@@ -202,7 +229,7 @@ export default async function Home() {
           </div>
 
           <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-4">
-            {trendingProducts.map((product) => (
+            {trendingProductsWithPlatform.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
